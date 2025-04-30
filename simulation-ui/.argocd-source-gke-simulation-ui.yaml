@@ -1,0 +1,3 @@
+kustomize:
+  images:
+  - asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/simulation-ui:latest
