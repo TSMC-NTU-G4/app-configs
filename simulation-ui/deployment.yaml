@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simulation-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simulation-ui
+  template:
+    metadata:
+      labels:
+        app: simulation-ui
+    spec:
+      containers:
+        - name: simulation-ui
+          image: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/simulation-ui
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "100m"

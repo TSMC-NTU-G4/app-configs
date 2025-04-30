@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: simulation-ui
+spec:
+  selector:
+    app: simulation-ui
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer

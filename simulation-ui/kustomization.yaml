@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: tsmc-ntu-g4
+
+resources:
+- deployment.yaml
+- service.yaml
+
+commonLabels:
+  app: simulation-ui
+  app.kubernetes.io/name: simulation-ui
+
+images:
+- name: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/simulation-ui
+  newTag: "17917e1"
