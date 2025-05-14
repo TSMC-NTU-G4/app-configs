@@ -8,9 +8,9 @@ resources:
 - service.yaml
 
 commonLabels:
-  app: simulation-ui
-  app.kubernetes.io/name: simulation-ui
+  app: frontend
+  app.kubernetes.io/name: frontend
 
 images:
-- name: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/simulation-ui
-  newTag: "17917e1"
+- name: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/frontend
+  newTag: "95c7005"

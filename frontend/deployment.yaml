@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simulation-ui
+  name: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: simulation-ui
+      app: frontend
   template:
     metadata:
       labels:
-        app: simulation-ui
+        app: frontend
     spec:
       containers:
-        - name: simulation-ui
-          image: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/simulation-ui
+        - name: frontend
+          image: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/frontend
           ports:
             - containerPort: 80
           resources:
