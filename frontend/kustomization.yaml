@@ -14,3 +14,11 @@ commonLabels:
 images:
 - name: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/frontend
   newTag: "95c7005"
+
+configMapGenerator:
+  - name: frontend-env
+    envs:
+      - frontend.env
+
+generatorOptions:
+  disableNameSuffixHash: true

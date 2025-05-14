@@ -17,6 +17,9 @@ spec:
           image: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/frontend
           ports:
             - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: frontend-env
           resources:
             requests:
               memory: "50Mi"
