@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: tsmc-ntu-g4
+
+resources:
+- deployment.yaml
+- service.yaml
+
+commonLabels:
+  app: backend
+  app.kubernetes.io/name: backend
+
+images:
+- name: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/backend
+  newTag: "95c7005"
+
+configMapGenerator:
+  - name: backend-env
+    envs:
+      - backend.env
+
+generatorOptions:
+  disableNameSuffixHash: true
