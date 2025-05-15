@@ -13,7 +13,7 @@ commonLabels:
 
 images:
 - name: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/backend
-  newTag: "95c7005"
+  newTag: "2ba31ca"
 
 configMapGenerator:
   - name: backend-env
