@@ -17,6 +17,7 @@ spec:
           image: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/backend
           ports:
             - containerPort: 8000
+              name: web
           envFrom:
             - configMapRef:
                 name: backend-env 
