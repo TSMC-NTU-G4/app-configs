@@ -1,10 +1,9 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: backend-sm
-  namespace: monitoring
+  name: backend
   labels:
-    release: monitoring
+    release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:
