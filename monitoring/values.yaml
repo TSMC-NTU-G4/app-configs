@@ -1,8 +1,9 @@
-prometheus:
-  service:
-    type: LoadBalancer
-grafana:
-  service:
-    type: LoadBalancer
-alertmanager:
-  enabled: false
+kube-prometheus-stack:
+  prometheus:
+    service:
+      type: LoadBalancer
+  grafana:
+    service:
+      type: LoadBalancer
+  alertmanager:
+    enabled: false
