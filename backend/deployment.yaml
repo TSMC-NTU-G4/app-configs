@@ -22,5 +22,8 @@ spec:
                 name: backend-env 
           resources:
             requests:
-              memory: "256M"
+              memory: "256Mi"
               cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
