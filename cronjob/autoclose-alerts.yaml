@@ -4,8 +4,10 @@ metadata:
   name: autoclose-alerts
 spec:
   schedule: "*/1 * * * *" 
+  concurrencyPolicy: "Forbid"
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 60
       template:
         spec:
           containers:
@@ -15,4 +17,11 @@ spec:
                 - -X
                 - DELETE
                 - http://backend:8000/api/earthquake/alerts/autoclose
-          restartPolicy: OnFailure
+                          resources:
+              requests:
+                cpu: "100m"
+                memory: "128Mi"
+              limits:
+                cpu: "200m"
+                memory: "256Mi"
+          restartPolicy: Never
