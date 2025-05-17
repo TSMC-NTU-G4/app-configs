@@ -4,3 +4,5 @@ prometheus:
 grafana:
   service:
     type: LoadBalancer
+alertmanager:
+  enabled: false
