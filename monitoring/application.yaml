@@ -11,9 +11,13 @@ spec:
     targetRevision: 45.7.1
     helm:
       releaseName: monitoring
-      valueFiles:
-        - values.yaml 
-    path: ""  
+      values: |
+        prometheus:
+          service:
+            type: LoadBalancer
+        grafana:
+          service:
+            type: LoadBalancer
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
