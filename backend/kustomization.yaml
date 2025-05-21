@@ -6,6 +6,7 @@ namespace: tsmc-ntu-g4
 resources:
 - deployment.yaml
 - service.yaml
+- hpa.yaml
 
 commonLabels:
   app: backend
