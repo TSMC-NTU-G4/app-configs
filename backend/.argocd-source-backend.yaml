@@ -1,3 +1,3 @@
 kustomize:
   images:
-  - asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/backend:f18828a
+  - asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/backend:c61d62a
