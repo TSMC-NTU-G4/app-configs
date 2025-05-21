@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: curl-realtime
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: curl-realtime
+  template:
+    metadata:
+      labels:
+        app: curl-realtime
+    spec:
+      containers:
+        - name: curl-realtime
+          image: curlimages/curl:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              while true; do
+                curl -s http://backend:8000/api/earthquake/realtime;
+                sleep 10;
+              done
