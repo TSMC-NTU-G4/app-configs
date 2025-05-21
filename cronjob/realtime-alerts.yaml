@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: curl-realtime
+  name: realtime-alerts
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: curl-realtime
+      app: realtime-alerts
   template:
     metadata:
       labels:
-        app: curl-realtime
+        app: realtime-alerts
     spec:
       containers:
         - name: curl-realtime
