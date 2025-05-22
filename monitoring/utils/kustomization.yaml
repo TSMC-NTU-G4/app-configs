@@ -5,4 +5,4 @@ namespace: tsmc-ntu-g4
 
 resources:
 - servicemonitor.yaml
-
+- dashboard.yaml
