@@ -6,6 +6,7 @@ namespace: tsmc-ntu-g4
 resources:
 - deployment.yaml
 - service.yaml
+- ingress.yaml
 
 commonLabels:
   app: frontend
