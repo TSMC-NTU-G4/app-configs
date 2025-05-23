@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: frontend
+spec:
+  revisionHistoryLimit: 30
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: asia-east1-docker.pkg.dev/tsmc-ntu-g4/app-images/frontend
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: frontend-env
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "100m"
+            limits:
+              memory: "100Mi"
+              cpu: "200m"
+  strategy:
+    canary:
+      canaryService: frontend-canary
+      stableService: frontend-stable
+      trafficRouting:
+        nginx:
+          stableIngress: frontend-ingress
+          additionalIngressAnnotations:
+            canary-by-header: Canary
+            canary-by-header-value: "true"
+      steps:
+      - setWeight: 10
+      - pause:
+          duration: 30s
+      - setWeight: 25
+      - pause:
+          duration: 30s
+      - setWeight: 50
+      - pause: {}
+      - setWeight: 75
+      - pause:
+          duration: 30s
+      - setWeight: 100
