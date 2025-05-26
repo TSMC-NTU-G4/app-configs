@@ -16,14 +16,7 @@ spec:
             image: curlimages/curl:latest
             command: ["/bin/sh", "-c"]
             args:
-              - |
-                echo "🌍 Debug: CronJob started at $(date)"
-                echo "📍 Backend URL: ${BACKEND_URL}"
-                echo "🕒 Current time: $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S %Z')"
-                echo "✅ Debug task completed successfully"
-            env:
-            - name: BACKEND_URL
-              value: "http://backend:8000/api/earthquake/"
+              - http://backend:8000/api/earthquake/
             resources:
                 requests:
                   cpu: "100m"
@@ -31,3 +24,4 @@ spec:
                 limits:
                   cpu: "200m"
                   memory: "256Mi"
+          restartPolicy: Never
