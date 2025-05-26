@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: earthquake-generator-debug
+  name: earthquake-generator
 spec:
   concurrencyPolicy: "Forbid"
   schedule: "*/60 * * * *"
@@ -11,7 +11,7 @@ spec:
       template:
         spec:
           containers:
-          - name: earthquake-generator-debug
+          - name: earthquake-generator
             image: curlimages/curl:latest
             command: ["/bin/sh", "-c"]
             
