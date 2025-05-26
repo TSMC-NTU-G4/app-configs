@@ -19,6 +19,12 @@ data:
             "hide": true,
             "iconColor": "rgba(0, 211, 255, 1)",
             "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
             "type": "dashboard"
           }
         ]
@@ -26,11 +32,14 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 10,
       "links": [],
+      "liveNow": false,
       "panels": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -59,7 +68,7 @@ data:
             "x": 1,
             "y": 0
           },
-          "id": 2,
+          "id": 5,
           "options": {
             "colorMode": "value",
             "graphMode": "area",
@@ -78,13 +87,18 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "9.3.8",
           "targets": [
             {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
               "disableTextWrap": false,
               "editorMode": "builder",
               "exemplar": false,
               "expr": "sum(earthquake_alerts_total)",
+              "format": "time_series",
               "fullMetaSearch": false,
               "includeNullMetadata": true,
               "legendFormat": "{{label_name}}",
@@ -93,7 +107,7 @@ data:
               "useBackend": false
             }
           ],
-          "title": "Total Events",
+          "title": "Total Alerts",
           "type": "stat"
         },
         {
@@ -145,7 +159,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "9.3.8",
           "targets": [
             {
               "disableTextWrap": false,
@@ -179,14 +193,9 @@ data:
                   "tooltip": false,
                   "viz": false
                 },
-                "lineWidth": 1,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                }
+                "lineWidth": 1
               },
               "displayName": "Frquency",
-              "fieldMinMax": false,
               "mappings": [],
               "max": 100,
               "min": 0,
@@ -211,6 +220,7 @@ data:
           },
           "id": 1,
           "options": {
+            "bucketOffset": 0,
             "bucketSize": 10,
             "combine": false,
             "legend": {
@@ -281,6 +291,154 @@ data:
           "type": "histogram"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 4,
+            "x": 1,
+            "y": 5
+          },
+          "id": 2,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {},
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "9.3.8",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "disableTextWrap": false,
+              "editorMode": "builder",
+              "exemplar": false,
+              "expr": "sum(earthquake_events_total)",
+              "fullMetaSearch": false,
+              "includeNullMetadata": true,
+              "legendFormat": "{{label_name}}",
+              "range": true,
+              "refId": "A",
+              "useBackend": false
+            }
+          ],
+          "title": "Total Events",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 4,
+            "x": 5,
+            "y": 5
+          },
+          "id": 6,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {},
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "9.3.8",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "disableTextWrap": false,
+              "editorMode": "builder",
+              "exemplar": false,
+              "expr": "sum(earthquake_alerts_autoclosed_total)",
+              "fullMetaSearch": false,
+              "includeNullMetadata": true,
+              "legendFormat": "{{label_name}}",
+              "range": true,
+              "refId": "A",
+              "useBackend": false
+            }
+          ],
+          "title": "Autoclosed Alerts",
+          "type": "stat"
+        },
+        {
           "datasource": "Prometheus",
           "fieldConfig": {
             "defaults": {
@@ -288,7 +446,6 @@ data:
                 "fixedColor": "dark-red",
                 "mode": "fixed"
               },
-              "fieldMinMax": false,
               "mappings": [],
               "max": 100,
               "min": 0,
@@ -308,8 +465,8 @@ data:
           "gridPos": {
             "h": 6,
             "w": 8,
-            "x": 1,
-            "y": 5
+            "x": 13,
+            "y": 8
           },
           "id": 4,
           "options": {
@@ -329,7 +486,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "9.3.8",
           "targets": [
             {
               "disableTextWrap": false,
@@ -395,22 +552,22 @@ data:
           "type": "stat"
         }
       ],
-      "preload": false,
       "refresh": "",
-      "schemaVersion": 40,
+      "schemaVersion": 37,
+      "style": "dark",
       "tags": [],
       "templating": {
         "list": []
       },
       "time": {
-        "from": "now-24h",
+        "from": "now-7d",
         "to": "now"
       },
       "timepicker": {},
       "timezone": "browser",
       "title": "Report",
       "uid": "eemffttipfcw0e",
-      "version": 19,
+      "version": 2,
       "weekStart": ""
     }
   factory-dashboard.json: |
