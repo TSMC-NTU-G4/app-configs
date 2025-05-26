@@ -4,7 +4,7 @@ metadata:
   name: earthquake-generator
 spec:
   concurrencyPolicy: "Forbid"
-  schedule: "*/60 * * * *"
+  schedule: "*/30 * * * *"
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 60
@@ -38,8 +38,7 @@ spec:
 
                 # Get Taiwan time (UTC+8)
                 # Use date command to get current time in Taiwan timezone
-                current_time=$(TZ='Asia/Taipei' date '+%Y-%m-%dT%H:%M:%S+08:00')
-                origin_time_iso="$current_time"
+                origin_time_iso=$(TZ='Asia/Taipei' date '+%Y-%m-%dT%H:%M:%S+08:00')
                 
                 
 
@@ -114,7 +113,7 @@ spec:
                 # Check response
                 if [ "$http_code" = "200" ] || [ "$http_code" = "201" ]; then
                   echo "✅ Data sent successfully"
-                  echo "   Time: $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')"
+                  echo "   Time: $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S') (UTC+8)"
                   echo "   Magnitude: $magnitude_value"
                   echo "   Depth: $focal_depth km"
                   echo "   Affected Areas: $(echo $selected_areas | tr '\n' ' ')"
