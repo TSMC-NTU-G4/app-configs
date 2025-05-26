@@ -4,12 +4,13 @@ metadata:
   name: earthquake-generator
 spec:
   schedule: "*/30 * * * *"
-  concurrencyPolicy: "Forbid"
+
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 60
       template:
         spec:
+          concurrencyPolicy: "OnFailure"
           containers:
           - name: earthquake-generator
             image: curlimages/curl:latest
