@@ -38,7 +38,7 @@ spec:
 
                 # Get Taiwan time (UTC+8)
                 # Use date command to get current time in Taiwan timezone
-                origin_time_iso=$(TZ='Etc/GMT-8' date '+%Y-%m-%dT%H:%M:%S%:z')
+                origin_time_iso=$(date -u -d '+8 hours' '+%Y-%m-%dT%H:%M:%S+08:00')
                 
                 
 
