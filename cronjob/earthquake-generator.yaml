@@ -4,6 +4,7 @@ metadata:
   name: earthquake-generator
 spec:
   schedule: "*/30 * * * *"
+  ttlSecondsAfterFinished: 60
   concurrencyPolicy: "Forbid"
   jobTemplate:
     spec:
