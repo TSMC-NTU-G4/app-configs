@@ -44,15 +44,22 @@ spec:
                 
                 echo "check 2"
 
-                # Select random epicenter location
-                epicenter_array=$(echo $epicenter_locations)
-                epicenter_count=$(echo $epicenter_array | wc -w)
-                epicenter_index=$(random_range 1 $epicenter_count)
-                selected_epicenter=$(echo $epicenter_array | cut -d' ' -f$epicenter_index)
+                # Select random epicenter location using simpler method
+                epicenter_index=$(random_range 1 8)
+                case $epicenter_index in
+                  1) selected_epicenter="台北市北投區" ;;
+                  2) selected_epicenter="新竹縣竹北市" ;;
+                  3) selected_epicenter="台中市西屯區" ;;
+                  4) selected_epicenter="台南市安南區" ;;
+                  5) selected_epicenter="花蓮縣秀林鄉" ;;
+                  6) selected_epicenter="宜蘭縣頭城鎮" ;;
+                  7) selected_epicenter="南投縣仁愛鄉" ;;
+                  8) selected_epicenter="雲林縣斗六市" ;;
+                esac
                 
-                # Generate magnitude (0.0 to 9.0, one decimal place)
-                magnitude_int=$(random_range 0 90)
-                magnitude_value=$(awk "BEGIN {printf \"%.1f\", $magnitude_int / 10}")
+                # Generate magnitude (1.0 to 9.0, one decimal place)
+                magnitude_int=$(random_range 10 90)
+                magnitude_value=$(echo "scale=1; $magnitude_int / 10" | awk '{printf "%.1f", $1}')
                 
                 # Generate focal depth (0 to 500 km)
                 focal_depth=$(random_range 0 500)
