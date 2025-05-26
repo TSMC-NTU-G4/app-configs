@@ -15,13 +15,138 @@ spec:
           - name: earthquake-generator-debug
             image: curlimages/curl:latest
             command: ["/bin/sh", "-c"]
+            
             args:
+            - |
+                # Function to generate random number in range
+                random_range() {
+                  min=$1
+                  max=$2
+                  echo $(( RANDOM % (max - min + 1) + min ))
+                }
+                
+                # Function to generate random hex
+                random_hex() {
+                  length=$1
+                  tr -dc 'a-f0-9' < /dev/urandom | head -c $length
+                }
+                
+                # Function to shuffle array and pick N elements
+                pick_random_areas() {
+                  areas="Taipei Taichung Tainan Hsinchu"
+                  num_areas=$(random_range 1 4)
+                  echo "$areas" | tr ' ' '\n' | shuf | head -n $num_areas | tr '\n' ' '
+                }
+                
+                # Get backend service URL from environment variable
+                BACKEND_URL=${BACKEND_URL:-"http://backend:8000"}
+                
+                echo "🌍 Generating earthquake data..."
+                
+                # Available areas
+                available_areas=("Taipei" "Taichung" "Tainan" "Hsinchu")
+                
+                # Epicenter locations
+                epicenter_locations=(
+                  "台北市北投區"
+                  "新竹縣竹北市" 
+                  "台中市西屯區"
+                  "台南市安南區"
+                  "花蓮縣秀林鄉"
+                  "宜蘭縣頭城鎮"
+                  "南投縣仁愛鄉"
+                  "雲林縣斗六市"
+                )
+                
+                # Get Taiwan time (UTC+8)
+                # Use date command to get current time in Taiwan timezone
+                current_time=$(TZ='Asia/Taipei' date '+%Y-%m-%dT%H:%M:%S%z')
+                # Format to ISO 8601 with colon in timezone offset
+                origin_time_iso=$(echo $current_time | sed 's/\([+-][0-9][0-9]\)\([0-9][0-9]\)$/\1:\2/')
+                
+                
+                # Select random epicenter location
+                epicenter_count=${#epicenter_locations[@]}
+                epicenter_index=$(random_range 0 $((epicenter_count - 1)))
+                selected_epicenter=${epicenter_locations[$epicenter_index]}
+                
+                # Generate magnitude (0.0 to 9.0, one decimal place)
+                magnitude_int=$(random_range 0 90)
+                magnitude_value=$(echo "scale=1; $magnitude_int / 10" | bc -l)
+                
+                # Generate focal depth (0 to 500 km)
+                focal_depth=$(random_range 0 500)
+                
+                # Generate random areas and intensities
+                num_areas=$(random_range 1 4)
+                selected_areas=$(echo "Taipei Taichung Tainan Hsinchu" | tr ' ' '\n' | shuf | head -n $num_areas)
+                
+                # Build shaking area JSON array
+                shaking_area="["
+                first=true
+                for area in $selected_areas; do
+                  if [ "$first" = true ]; then
+                    first=false
+                  else
+                    shaking_area="$shaking_area,"
+                  fi
+                  intensity=$(random_range 1 9)
+                  shaking_area="$shaking_area{\"countyName\":\"$area\",\"areaIntensity\":$intensity}"
+                done
+                shaking_area="$shaking_area]"
+                
+                # Construct JSON payload
+                json_payload=$(cat <<EOF
+                {
+                  "source": "CronJob-Generated",
+                  "originTime": "$origin_time_iso",
+                  "epicenterLocation": "$selected_epicenter",
+                  "magnitudeValue": $magnitude_value,
+                  "focalDepth": $focal_depth,
+                  "shakingArea": $shaking_area
+                }
+                EOF
+                )
+                
+                # Send POST request
+                response=$(curl -s -w "HTTPSTATUS:%{http_code}" \
+                  -X POST \
+                  -H "accept: application/json" \
+                  -H "Content-Type: application/json" \
+                  -d "$json_payload" \
+                  --connect-timeout 30 \
+                  --max-time 60 \
+                  "$BACKEND_URL/api/earthquake/")
+                
+                # Extract HTTP status code
+                http_code=$(echo $response | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
+                body=$(echo $response | sed -e 's/HTTPSTATUS:.*//g')
+                
+                # Check response
+                if [ "$http_code" = "200" ] || [ "$http_code" = "201" ]; then
+                  echo "✅ Data sent successfully"
+                  echo "   Time: $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')"
+                  echo "   Magnitude: $magnitude_value"
+                  echo "   Depth: $focal_depth km"
+                  echo "   Affected Areas: $(echo $selected_areas | tr '\n' ' ')"
+                else
+                  echo "❌ Failed to send data: HTTP $http_code"
+                  echo "   Error Message: $body"
+                  exit 1
+                fi
+                
+                # Output JSON data for review
+                echo "📝 Data Content:"
+                echo "$json_payload" | sed 's/^/   /'
+                echo "$(printf '%.0s-' {1..50})"
+                echo "✅ Task completed successfully"
               - http://backend:8000/api/earthquake/
+              - echo "Debugging earthquake generator"
             resources:
                 requests:
                   cpu: "100m"
                   memory: "128Mi"
                 limits:
-                  cpu: "200m"
-                  memory: "256Mi"
+                  cpu: "400m"
+                  memory: "512Mi"
           restartPolicy: Never
