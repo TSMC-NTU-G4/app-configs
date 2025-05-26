@@ -27,7 +27,7 @@ spec:
                 # Get backend service URL from environment variable
                 BACKEND_URL=${BACKEND_URL:-"http://backend:8000"}
                 
-                echo "🌍 Generating earthquake data..."
+                echo "Generating earthquake data..."
                 
                 # Available areas
                 available_areas=("Taipei" "Taichung" "Tainan" "Hsinchu")
@@ -43,14 +43,16 @@ spec:
                   "南投縣仁愛鄉"
                   "雲林縣斗六市"
                 )
-                
+                echo "check 1"
+
                 # Get Taiwan time (UTC+8)
                 # Use date command to get current time in Taiwan timezone
                 current_time=$(TZ='Asia/Taipei' date '+%Y-%m-%dT%H:%M:%S%z')
                 # Format to ISO 8601 with colon in timezone offset
                 origin_time_iso=$(echo $current_time | sed 's/\([+-][0-9][0-9]\)\([0-9][0-9]\)$/\1:\2/')
                 
-                
+                echo "check 2"
+
                 # Select random epicenter location
                 epicenter_count=${#epicenter_locations[@]}
                 epicenter_index=$(random_range 0 $((epicenter_count - 1)))
@@ -67,6 +69,8 @@ spec:
                 num_areas=$(random_range 1 4)
                 selected_areas=$(echo "Taipei Taichung Tainan Hsinchu" | tr ' ' '\n' | shuf | head -n $num_areas)
                 
+                echo "check 3"
+
                 # Build shaking area JSON array
                 shaking_area="["
                 first=true
@@ -94,6 +98,8 @@ spec:
                 EOF
                 )
                 
+                echo "check 4"
+
                 # Send POST request
                 response=$(curl -s -w "HTTPSTATUS:%{http_code}" \
                   -X POST \
