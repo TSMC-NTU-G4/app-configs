@@ -140,8 +140,8 @@ spec:
                 echo "$json_payload" | sed 's/^/   /'
                 echo "$(printf '%.0s-' {1..50})"
                 echo "✅ Task completed successfully"
-              - http://backend:8000/api/earthquake/
-              - echo "Debugging earthquake generator"
+            - http://backend:8000/api/earthquake/
+            - echo "Debugging earthquake generator"
             resources:
                 requests:
                   cpu: "100m"
