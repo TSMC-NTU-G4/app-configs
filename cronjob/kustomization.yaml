@@ -6,4 +6,4 @@ namespace: tsmc-ntu-g4
 resources:
   - autoclose-alerts.yaml
   - realtime-alerts.yaml
-  - earthquake-generator.yaml
+  - earthquake-generator-debug.yaml

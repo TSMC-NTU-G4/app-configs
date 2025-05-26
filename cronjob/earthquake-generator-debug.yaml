@@ -1,0 +1,33 @@
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: earthquake-generator-debug
+spec:
+  ttlSecondsAfterFinished: 60
+  concurrencyPolicy: "Forbid"
+  schedule: "*/30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: earthquake-generator-debug
+            image: curlimages/curl:latest
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                echo "🌍 Debug: CronJob started at $(date)"
+                echo "📍 Backend URL: ${BACKEND_URL}"
+                echo "🕒 Current time: $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S %Z')"
+                echo "✅ Debug task completed successfully"
+            env:
+            - name: BACKEND_URL
+              value: "http://backend:8000"
+            resources:
+              requests:
+                memory: "16Mi"
+                cpu: "10m"
+              limits:
+                memory: "32Mi"
+                cpu: "50m"
