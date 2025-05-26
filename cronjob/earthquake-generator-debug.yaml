@@ -29,20 +29,11 @@ spec:
                 
                 echo "Generating earthquake data..."
                 
-                # Available areas
-                available_areas=("Taipei" "Taichung" "Tainan" "Hsinchu")
+                # Available areas (space-separated string)
+                available_areas="Taipei Taichung Tainan Hsinchu"
                 
-                # Epicenter locations
-                epicenter_locations=(
-                  "台北市北投區"
-                  "新竹縣竹北市" 
-                  "台中市西屯區"
-                  "台南市安南區"
-                  "花蓮縣秀林鄉"
-                  "宜蘭縣頭城鎮"
-                  "南投縣仁愛鄉"
-                  "雲林縣斗六市"
-                )
+                # Epicenter locations (space-separated string)
+                epicenter_locations="台北市北投區 新竹縣竹北市 台中市西屯區 台南市安南區 花蓮縣秀林鄉 宜蘭縣頭城鎮 南投縣仁愛鄉 雲林縣斗六市"
                 echo "check 1"
 
                 # Get Taiwan time (UTC+8)
@@ -54,13 +45,14 @@ spec:
                 echo "check 2"
 
                 # Select random epicenter location
-                epicenter_count=${#epicenter_locations[@]}
-                epicenter_index=$(random_range 0 $((epicenter_count - 1)))
-                selected_epicenter=${epicenter_locations[$epicenter_index]}
+                epicenter_array=$(echo $epicenter_locations)
+                epicenter_count=$(echo $epicenter_array | wc -w)
+                epicenter_index=$(random_range 1 $epicenter_count)
+                selected_epicenter=$(echo $epicenter_array | cut -d' ' -f$epicenter_index)
                 
                 # Generate magnitude (0.0 to 9.0, one decimal place)
                 magnitude_int=$(random_range 0 90)
-                magnitude_value=$(echo "scale=1; $magnitude_int / 10" | bc -l)
+                magnitude_value=$(awk "BEGIN {printf \"%.1f\", $magnitude_int / 10}")
                 
                 # Generate focal depth (0 to 500 km)
                 focal_depth=$(random_range 0 500)
