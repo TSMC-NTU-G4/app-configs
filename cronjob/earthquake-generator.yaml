@@ -4,116 +4,146 @@ metadata:
   name: earthquake-generator
 spec:
   schedule: "*/30 * * * *"
-
+  concurrencyPolicy: "Forbid"
   jobTemplate:
     spec:
-      ttlSecondsAfterFinished: 60
       template:
         spec:
-          concurrencyPolicy: "OnFailure"
           containers:
           - name: earthquake-generator
             image: curlimages/curl:latest
             command: ["/bin/sh", "-c"]
             args:
               - |
-                pip install requests &&
-                cat << 'EOF' > /tmp/earthquake_generator.py
-                import requests
-                import json
-                import random
-                from datetime import datetime, timezone, timedelta
-                import os
+                # Function to generate random number in range
+                random_range() {
+                  min=$1
+                  max=$2
+                  echo $(( RANDOM % (max - min + 1) + min ))
+                }
                 
-                def generate_earthquake_data():
-                    """Generate and send simulated earthquake data to API"""
-                    
-                    # Get backend service URL from environment variable
-                    backend_url = os.getenv('BACKEND_URL', 'http://backend:8000')
-                    
-                    # List of available areas
-                    available_areas = ["Taipei", "Taichung", "Tainan", "Hsinchu"]
-                    
-                    # Epicenter location options
-                    epicenter_locations = [
-                        "台北市北投區", "新竹縣竹北市", "台中市西屯區", 
-                        "台南市安南區", "花蓮縣秀林鄉", "宜蘭縣頭城鎮",
-                        "南投縣仁愛鄉", "雲林縣斗六市"
-                    ]
-
-                    # Use Taiwan timezone (UTC+8)
-                    taiwan_tz = timezone(timedelta(hours=8))
-                    current_time = datetime.now(taiwan_tz)
-                    
-                    # Convert to ISO format with timezone info
-                    origin_time_iso = current_time.isoformat()
-                    
-                    # Randomly select 1-4 areas
-                    num_areas = random.randint(1, 4)
-                    selected_areas = random.sample(available_areas, num_areas)
-                    
-                    # Generate intensity data for each selected area
-                    shaking_area = []
-                    for area in selected_areas:
-                        shaking_area.append({
-                            "countyName": area,
-                            "areaIntensity": random.randint(1, 9)
-                        })
-                    
-                    # Construct request data
-                    earthquake_data = {
-                        "source": f"CronJob-Generated",
-                        "originTime": origin_time_iso,
-                        "epicenterLocation": random.choice(epicenter_locations),
-                        "magnitudeValue": round(random.uniform(0, 9), 1),
-                        "focalDepth": random.randint(0, 500),
-                        "shakingArea": shaking_area
-                    }
-                    
-                    # Send POST request
-                    try:
-                        response = requests.post(
-                            f'{backend_url}/api/earthquake/',
-                            headers={
-                                'accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            json=earthquake_data,
-                            timeout=30
-                        )
-                        
-                        if response.status_code in [200, 201]:
-                            print(f"✅ Data sent successfully")
-                            print(f"   Time: {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
-                            print(f"   Magnitude: {earthquake_data['magnitudeValue']}")
-                            print(f"   Depth: {earthquake_data['focalDepth']} km")
-                            print(f"   Affected Areas: {[area['countyName'] for area in shaking_area]}")
-                        else:
-                            print(f"❌ Failed to send data: {response.status_code}")
-                            print(f"   Error Message: {response.text}")
-                            exit(1)
-                            
-                    except requests.exceptions.RequestException as e:
-                        print(f"❌ Network error: {e}")
-                        exit(1)
-                    
-                    # Output JSON data for review
-                    print(f"📝 Data Content: {json.dumps(earthquake_data, indent=2, ensure_ascii=False)}")
-                    print("-" * 50)
+                # Function to generate random hex
+                random_hex() {
+                  length=$1
+                  tr -dc 'a-f0-9' < /dev/urandom | head -c $length
+                }
                 
-                if __name__ == "__main__":
-                    print("🌍 Generating earthquake data...")
-                    generate_earthquake_data()
-                    print("✅ Task completed successfully")
+                # Function to shuffle array and pick N elements
+                pick_random_areas() {
+                  areas="Taipei Taichung Tainan Hsinchu"
+                  num_areas=$(random_range 1 4)
+                  echo "$areas" | tr ' ' '\n' | shuf | head -n $num_areas | tr '\n' ' '
+                }
+                
+                # Get backend service URL from environment variable
+                BACKEND_URL=${BACKEND_URL:-"http://backend:8000"}
+                
+                echo "🌍 Generating earthquake data..."
+                
+                # Available areas
+                available_areas=("Taipei" "Taichung" "Tainan" "Hsinchu")
+                
+                # Epicenter locations
+                epicenter_locations=(
+                  "台北市北投區"
+                  "新竹縣竹北市" 
+                  "台中市西屯區"
+                  "台南市安南區"
+                  "花蓮縣秀林鄉"
+                  "宜蘭縣頭城鎮"
+                  "南投縣仁愛鄉"
+                  "雲林縣斗六市"
+                )
+                
+                # Get Taiwan time (UTC+8)
+                # Use date command to get current time in Taiwan timezone
+                current_time=$(TZ='Asia/Taipei' date '+%Y-%m-%dT%H:%M:%S%z')
+                # Format to ISO 8601 with colon in timezone offset
+                origin_time_iso=$(echo $current_time | sed 's/\([+-][0-9][0-9]\)\([0-9][0-9]\)$/\1:\2/')
+                
+                
+                # Select random epicenter location
+                epicenter_count=${#epicenter_locations[@]}
+                epicenter_index=$(random_range 0 $((epicenter_count - 1)))
+                selected_epicenter=${epicenter_locations[$epicenter_index]}
+                
+                # Generate magnitude (0.0 to 9.0, one decimal place)
+                magnitude_int=$(random_range 0 90)
+                magnitude_value=$(echo "scale=1; $magnitude_int / 10" | bc -l)
+                
+                # Generate focal depth (0 to 500 km)
+                focal_depth=$(random_range 0 500)
+                
+                # Generate random areas and intensities
+                num_areas=$(random_range 1 4)
+                selected_areas=$(echo "Taipei Taichung Tainan Hsinchu" | tr ' ' '\n' | shuf | head -n $num_areas)
+                
+                # Build shaking area JSON array
+                shaking_area="["
+                first=true
+                for area in $selected_areas; do
+                  if [ "$first" = true ]; then
+                    first=false
+                  else
+                    shaking_area="$shaking_area,"
+                  fi
+                  intensity=$(random_range 1 9)
+                  shaking_area="$shaking_area{\"countyName\":\"$area\",\"areaIntensity\":$intensity}"
+                done
+                shaking_area="$shaking_area]"
+                
+                # Construct JSON payload
+                json_payload=$(cat <<EOF
+                {
+                  "source": "CronJob-Generated",
+                  "originTime": "$origin_time_iso",
+                  "epicenterLocation": "$selected_epicenter",
+                  "magnitudeValue": $magnitude_value,
+                  "focalDepth": $focal_depth,
+                  "shakingArea": $shaking_area
+                }
                 EOF
-                python /tmp/earthquake_generator.py
+                )
+                
+                # Send POST request
+                response=$(curl -s -w "HTTPSTATUS:%{http_code}" \
+                  -X POST \
+                  -H "accept: application/json" \
+                  -H "Content-Type: application/json" \
+                  -d "$json_payload" \
+                  --connect-timeout 30 \
+                  --max-time 60 \
+                  "$BACKEND_URL/api/earthquake/")
+                
+                # Extract HTTP status code
+                http_code=$(echo $response | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
+                body=$(echo $response | sed -e 's/HTTPSTATUS:.*//g')
+                
+                # Check response
+                if [ "$http_code" = "200" ] || [ "$http_code" = "201" ]; then
+                  echo "✅ Data sent successfully"
+                  echo "   Time: $(TZ='Asia/Taipei' date '+%Y-%m-%d %H:%M:%S')"
+                  echo "   Magnitude: $magnitude_value"
+                  echo "   Depth: $focal_depth km"
+                  echo "   Affected Areas: $(echo $selected_areas | tr '\n' ' ')"
+                else
+                  echo "❌ Failed to send data: HTTP $http_code"
+                  echo "   Error Message: $body"
+                  exit 1
+                fi
+                
+                # Output JSON data for review
+                echo "📝 Data Content:"
+                echo "$json_payload" | sed 's/^/   /'
+                echo "$(printf '%.0s-' {1..50})"
+                echo "✅ Task completed successfully"
             env:
             - name: BACKEND_URL
               value: "http://backend:8000"
             resources:
               requests:
-                memory: "64Mi"
-                cpu: "50m"
+                memory: "16Mi"
+                cpu: "10m"
               limits:
-                memory: "128Mi"
-                cpu: "100m"
+                memory: "32Mi"
+                cpu: "50m"
