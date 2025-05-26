@@ -34,15 +34,14 @@ spec:
                 
                 # Epicenter locations (space-separated string)
                 epicenter_locations="台北市北投區 新竹縣竹北市 台中市西屯區 台南市安南區 花蓮縣秀林鄉 宜蘭縣頭城鎮 南投縣仁愛鄉 雲林縣斗六市"
-                echo "check 1"
+                
 
                 # Get Taiwan time (UTC+8)
                 # Use date command to get current time in Taiwan timezone
-                current_time=$(TZ='Asia/Taipei' date '+%Y-%m-%dT%H:%M:%S%z')
-                # Format to ISO 8601 with colon in timezone offset
-                origin_time_iso=$(echo $current_time | sed 's/\([+-][0-9][0-9]\)\([0-9][0-9]\)$/\1:\2/')
+                current_time=$(TZ='Asia/Taipei' date '+%Y-%m-%dT%H:%M:%S+08:00')
+                origin_time_iso="$current_time"
                 
-                echo "check 2"
+                
 
                 # Select random epicenter location using simpler method
                 epicenter_index=$(random_range 1 8)
@@ -68,8 +67,7 @@ spec:
                 # Generate random areas and intensities
                 num_areas=$(random_range 1 4)
                 selected_areas=$(echo "Taipei Taichung Tainan Hsinchu" | tr ' ' '\n' | shuf | head -n $num_areas)
-                
-                echo "check 3"
+
 
                 # Build shaking area JSON array
                 shaking_area="["
@@ -98,7 +96,6 @@ spec:
                 EOF
                 )
                 
-                echo "check 4"
 
                 # Send POST request
                 response=$(curl -s -w "HTTPSTATUS:%{http_code}" \
@@ -126,8 +123,7 @@ spec:
                   echo "   Error Message: $body"
                   exit 1
                 fi
-                
-                echo "check 5"
+
 
                 # Output JSON data for review
                 echo "📝 Data Content:"
