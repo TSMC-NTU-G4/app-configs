@@ -4,11 +4,11 @@ kind: CronJob
 metadata:
   name: earthquake-generator-debug
 spec:
-  ttlSecondsAfterFinished: 60
   concurrencyPolicy: "Forbid"
   schedule: "*/30 * * * *"
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 60
       template:
         spec:
           containers:
@@ -23,7 +23,7 @@ spec:
                 echo "✅ Debug task completed successfully"
             env:
             - name: BACKEND_URL
-              value: "http://backend:8000"
+              value: "http://backend:8000/api/earthquake/"
             resources:
                 requests:
                   cpu: "100m"
