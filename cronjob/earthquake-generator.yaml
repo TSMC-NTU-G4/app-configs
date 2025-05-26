@@ -1,21 +1,22 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: earthquake-generator
+  name: earthquake-generator-debug
 spec:
-  schedule: "*/30 * * * *"
-  ttlSecondsAfterFinished: 60
   concurrencyPolicy: "Forbid"
+  schedule: "*/60 * * * *"
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 60
       template:
         spec:
           containers:
-          - name: earthquake-generator
+          - name: earthquake-generator-debug
             image: curlimages/curl:latest
             command: ["/bin/sh", "-c"]
+            
             args:
-              - |
+            - |
                 # Function to generate random number in range
                 random_range() {
                   min=$1
@@ -23,54 +24,43 @@ spec:
                   echo $(( RANDOM % (max - min + 1) + min ))
                 }
                 
-                # Function to generate random hex
-                random_hex() {
-                  length=$1
-                  tr -dc 'a-f0-9' < /dev/urandom | head -c $length
-                }
-                
-                # Function to shuffle array and pick N elements
-                pick_random_areas() {
-                  areas="Taipei Taichung Tainan Hsinchu"
-                  num_areas=$(random_range 1 4)
-                  echo "$areas" | tr ' ' '\n' | shuf | head -n $num_areas | tr '\n' ' '
-                }
-                
                 # Get backend service URL from environment variable
                 BACKEND_URL=${BACKEND_URL:-"http://backend:8000"}
                 
-                echo "🌍 Generating earthquake data..."
+                echo "Generating earthquake data..."
                 
-                # Available areas
-                available_areas=("Taipei" "Taichung" "Tainan" "Hsinchu")
+                # Available areas (space-separated string)
+                available_areas="Taipei Taichung Tainan Hsinchu"
                 
-                # Epicenter locations
-                epicenter_locations=(
-                  "台北市北投區"
-                  "新竹縣竹北市" 
-                  "台中市西屯區"
-                  "台南市安南區"
-                  "花蓮縣秀林鄉"
-                  "宜蘭縣頭城鎮"
-                  "南投縣仁愛鄉"
-                  "雲林縣斗六市"
-                )
-                
+                # Epicenter locations (space-separated string)
+                epicenter_locations="台北市北投區 新竹縣竹北市 台中市西屯區 台南市安南區 花蓮縣秀林鄉 宜蘭縣頭城鎮 南投縣仁愛鄉 雲林縣斗六市"
+                echo "check 1"
+
                 # Get Taiwan time (UTC+8)
                 # Use date command to get current time in Taiwan timezone
                 current_time=$(TZ='Asia/Taipei' date '+%Y-%m-%dT%H:%M:%S%z')
                 # Format to ISO 8601 with colon in timezone offset
                 origin_time_iso=$(echo $current_time | sed 's/\([+-][0-9][0-9]\)\([0-9][0-9]\)$/\1:\2/')
                 
+                echo "check 2"
+
+                # Select random epicenter location using simpler method
+                epicenter_index=$(random_range 1 8)
+                case $epicenter_index in
+                  1) selected_epicenter="台北市北投區" ;;
+                  2) selected_epicenter="新竹縣竹北市" ;;
+                  3) selected_epicenter="台中市西屯區" ;;
+                  4) selected_epicenter="台南市安南區" ;;
+                  5) selected_epicenter="花蓮縣秀林鄉" ;;
+                  6) selected_epicenter="宜蘭縣頭城鎮" ;;
+                  7) selected_epicenter="南投縣仁愛鄉" ;;
+                  8) selected_epicenter="雲林縣斗六市" ;;
+                esac
                 
-                # Select random epicenter location
-                epicenter_count=${#epicenter_locations[@]}
-                epicenter_index=$(random_range 0 $((epicenter_count - 1)))
-                selected_epicenter=${epicenter_locations[$epicenter_index]}
-                
-                # Generate magnitude (0.0 to 9.0, one decimal place)
-                magnitude_int=$(random_range 0 90)
-                magnitude_value=$(echo "scale=1; $magnitude_int / 10" | bc -l)
+                # Generate magnitude (1.0 to 9.0, one decimal place)
+                magnitude_whole=$(random_range 1 9)
+                magnitude_decimal=$(random_range 0 9)
+                magnitude_value="${magnitude_whole}.${magnitude_decimal}"
                 
                 # Generate focal depth (0 to 500 km)
                 focal_depth=$(random_range 0 500)
@@ -79,6 +69,8 @@ spec:
                 num_areas=$(random_range 1 4)
                 selected_areas=$(echo "Taipei Taichung Tainan Hsinchu" | tr ' ' '\n' | shuf | head -n $num_areas)
                 
+                echo "check 3"
+
                 # Build shaking area JSON array
                 shaking_area="["
                 first=true
@@ -106,6 +98,8 @@ spec:
                 EOF
                 )
                 
+                echo "check 4"
+
                 # Send POST request
                 response=$(curl -s -w "HTTPSTATUS:%{http_code}" \
                   -X POST \
@@ -133,18 +127,20 @@ spec:
                   exit 1
                 fi
                 
+                echo "check 5"
+
                 # Output JSON data for review
                 echo "📝 Data Content:"
                 echo "$json_payload" | sed 's/^/   /'
                 echo "$(printf '%.0s-' {1..50})"
                 echo "✅ Task completed successfully"
-            env:
-            - name: BACKEND_URL
-              value: "http://backend:8000"
+            - http://backend:8000/api/earthquake/
+            - echo "Debugging earthquake generator"
             resources:
-              requests:
-                memory: "16Mi"
-                cpu: "10m"
-              limits:
-                memory: "32Mi"
-                cpu: "50m"
+                requests:
+                  cpu: "100m"
+                  memory: "128Mi"
+                limits:
+                  cpu: "400m"
+                  memory: "512Mi"
+          restartPolicy: Never

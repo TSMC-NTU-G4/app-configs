@@ -4,7 +4,7 @@ metadata:
   name: earthquake-generator-debug
 spec:
   concurrencyPolicy: "Forbid"
-  schedule: "*/1 * * * *"
+  schedule: "*/60 * * * *"
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 60
@@ -58,8 +58,9 @@ spec:
                 esac
                 
                 # Generate magnitude (1.0 to 9.0, one decimal place)
-                magnitude_int=$(random_range 10 90)
-                magnitude_value=$(echo "scale=1; $magnitude_int / 10" | awk '{printf "%.1f", $1}')
+                magnitude_whole=$(random_range 1 9)
+                magnitude_decimal=$(random_range 0 9)
+                magnitude_value="${magnitude_whole}.${magnitude_decimal}"
                 
                 # Generate focal depth (0 to 500 km)
                 focal_depth=$(random_range 0 500)
