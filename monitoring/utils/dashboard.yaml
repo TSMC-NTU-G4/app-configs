@@ -6037,7 +6037,7 @@ data:
               "refId": "E"
             }
           ],
-          "title": "Command",
+          "title": "Damage",
           "transformations": [
             {
               "id": "joinByField",
@@ -6272,6 +6272,6 @@ data:
       "timezone": "browser",
       "title": "Earthquake",
       "uid": "cem0vlevv4f0gd",
-      "version": 1,
+      "version": 3,
       "weekStart": ""
     }
