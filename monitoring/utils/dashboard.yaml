@@ -32,13 +32,13 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
+      "id": 7,
       "links": [],
-      "liveNow": false,
       "panels": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "fieldConfig": {
             "defaults": {
@@ -50,8 +50,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -87,7 +86,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "9.3.8",
+          "pluginVersion": "12.0.0",
           "targets": [
             {
               "datasource": {
@@ -110,6 +109,82 @@ data:
           "title": "Total Alerts",
           "type": "stat"
         },
+
+
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 4,
+            "x": 1,
+            "y": 0
+          },
+          "id": 5,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {},
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "disableTextWrap": false,
+              "editorMode": "builder",
+              "exemplar": false,
+              "expr": "sum(earthquake_alerts_suppress_total)",
+              "format": "time_series",
+              "fullMetaSearch": false,
+              "includeNullMetadata": true,
+              "legendFormat": "{{label_name}}",
+              "range": true,
+              "refId": "A",
+              "useBackend": false
+            }
+          ],
+          "title": "Suppressed Alerts",
+          "type": "stat"
+        },
         {
           "datasource": "Prometheus",
           "fieldConfig": {
@@ -122,8 +197,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -159,7 +233,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "9.3.8",
+          "pluginVersion": "12.0.0",
           "targets": [
             {
               "disableTextWrap": false,
@@ -193,7 +267,11 @@ data:
                   "tooltip": false,
                   "viz": false
                 },
-                "lineWidth": 1
+                "lineWidth": 1,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                }
               },
               "displayName": "Frquency",
               "mappings": [],
@@ -203,12 +281,11 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
-              "unit": "ms"
+              "unit": "seconds"
             },
             "overrides": []
           },
@@ -235,7 +312,7 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "12.0.0",
           "targets": [
             {
               "disableTextWrap": false,
@@ -293,7 +370,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "fieldConfig": {
             "defaults": {
@@ -305,8 +382,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -342,7 +418,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "9.3.8",
+          "pluginVersion": "12.0.0",
           "targets": [
             {
               "datasource": {
@@ -367,7 +443,7 @@ data:
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "fieldConfig": {
             "defaults": {
@@ -379,8 +455,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -416,7 +491,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "9.3.8",
+          "pluginVersion": "12.0.0",
           "targets": [
             {
               "datasource": {
@@ -453,12 +528,11 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
-              "unit": "ms"
+              "unit": "seconds"
             },
             "overrides": []
           },
@@ -486,7 +560,7 @@ data:
             "textMode": "auto",
             "wideLayout": true
           },
-          "pluginVersion": "9.3.8",
+          "pluginVersion": "12.0.0",
           "targets": [
             {
               "disableTextWrap": false,
@@ -552,9 +626,9 @@ data:
           "type": "stat"
         }
       ],
+      "preload": false,
       "refresh": "",
-      "schemaVersion": 37,
-      "style": "dark",
+      "schemaVersion": 41,
       "tags": [],
       "templating": {
         "list": []
@@ -567,8 +641,7 @@ data:
       "timezone": "browser",
       "title": "Report",
       "uid": "eemffttipfcw0e",
-      "version": 2,
-      "weekStart": ""
+      "version": 4
     }
   factory-dashboard.json: |
     {
