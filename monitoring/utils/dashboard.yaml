@@ -6384,8 +6384,8 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 8,
       "links": [],
+      "liveNow": false,
       "panels": [
         {
           "datasource": {
@@ -6399,9 +6399,7 @@ data:
               },
               "custom": {
                 "align": "left",
-                "cellOptions": {
-                  "type": "auto"
-                },
+                "displayMode": "auto",
                 "inspect": false
               },
               "mappings": [
@@ -6460,13 +6458,6 @@ data:
                   {
                     "id": "custom.align",
                     "value": "center"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "color-background"
-                    }
                   }
                 ]
               },
@@ -6479,13 +6470,6 @@ data:
                   {
                     "id": "custom.align",
                     "value": "center"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "color-background"
-                    }
                   }
                 ]
               },
@@ -6498,13 +6482,6 @@ data:
                   {
                     "id": "custom.align",
                     "value": "center"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "color-background"
-                    }
                   }
                 ]
               },
@@ -6514,13 +6491,6 @@ data:
                   "options": "Tainan"
                 },
                 "properties": [
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "color-background"
-                    }
-                  },
                   {
                     "id": "custom.align",
                     "value": "center"
@@ -6552,7 +6522,7 @@ data:
             "showHeader": true,
             "sortBy": []
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "9.3.8",
           "targets": [
             {
               "datasource": {
@@ -6628,34 +6598,112 @@ data:
               "id": "joinByField",
               "options": {
                 "byField": "Time",
-                "mode": "inner"
-              }
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {},
-                "renameByName": {
-                  "Value #D": "",
-                  "earthquake_id": "ID",
-                  "earthquake_id 1": "ID",
-                  "earthquake_id 2": "ID",
-                  "earthquake_id 3": "ID",
-                  "id": "ID",
-                  "id 5": "ID",
-                  "instance 2": ""
-                }
+                "mode": "outer"
               }
             },
             {
               "id": "joinByField",
               "options": {
-                "byField": "ID",
-                "mode": "inner"
+                "byField": "Time",
+                "mode": "outer"
               }
             },
             {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "__name__": true,
+                  "__name__ 1": true,
+                  "__name__ 2": true,
+                  "__name__ 3": true,
+                  "__name__ 4": true,
+                  "container 1": true,
+                  "container 2": true,
+                  "container 3": true,
+                  "container 4": true,
+                  "container 5": true,
+                  "earthquake_id": true,
+                  "earthquake_id 1": true,
+                  "earthquake_id 2": true,
+                  "earthquake_id 3": true,
+                  "earthquake_id 4": true,
+                  "endpoint 1": true,
+                  "endpoint 2": true,
+                  "endpoint 3": true,
+                  "endpoint 4": true,
+                  "endpoint 5": true,
+                  "epicenter": false,
+                  "id 1": true,
+                  "id 2": true,
+                  "id 3": true,
+                  "id 4": true,
+                  "id 5": true,
+                  "instance 1": true,
+                  "instance 2": true,
+                  "instance 3": true,
+                  "instance 4": true,
+                  "instance 5": true,
+                  "job 1": true,
+                  "job 2": true,
+                  "job 3": true,
+                  "job 4": true,
+                  "job 5": true,
+                  "location": true,
+                  "location 1": true,
+                  "location 2": true,
+                  "location 3": true,
+                  "location 4": true,
+                  "namespace 1": true,
+                  "namespace 2": true,
+                  "namespace 3": true,
+                  "namespace 4": true,
+                  "namespace 5": true,
+                  "origin_time": false,
+                  "origin_time 2": true,
+                  "origin_time 3": true,
+                  "origin_time 4": true,
+                  "pod 1": true,
+                  "pod 2": true,
+                  "pod 3": true,
+                  "pod 4": true,
+                  "pod 5": true,
+                  "service 1": true,
+                  "service 2": true,
+                  "service 3": true,
+                  "service 4": true,
+                  "service 5": true,
+                  "source 1": false,
+                  "source 2": true,
+                  "source 3": true,
+                  "source 4": true,
+                  "source 5": true
+                },
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Value #A": "magnitude",
+                  "Value #B": "Taipei",
+                  "Value #C": "Hsinchu",
+                  "Value #D": "Taichung",
+                  "Value #E": "Tainan",
+                  "__name__": "",
+                  "earthquake_id": "ID",
+                  "earthquake_id 1": "ID",
+                  "earthquake_id 2": "ID",
+                  "earthquake_id 3": "ID",
+                  "epicenter": "Epicenter",
+                  "id": "ID",
+                  "id 1": "ID",
+                  "id 5": "ID",
+                  "instance 1": "",
+                  "instance 2": "",
+                  "source 1": "source",
+                  "source 2": ""
+                }
+              }
+            },
+            {
+              "disabled": true,
               "id": "groupBy",
               "options": {
                 "fields": {
@@ -6731,13 +6779,21 @@ data:
               }
             },
             {
+              "disabled": true,
               "id": "calculateField",
               "options": {
                 "binary": {
-                  "left": "Value #B (first)",
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Value #B (first)"
+                    }
+                  },
                   "operator": "*",
                   "reducer": "sum",
-                  "right": "1000"
+                  "right": {
+                    "fixed": "1000"
+                  }
                 },
                 "mode": "binary",
                 "reduce": {
@@ -6750,6 +6806,7 @@ data:
               }
             },
             {
+              "disabled": true,
               "id": "organize",
               "options": {
                 "excludeByName": {
@@ -6802,9 +6859,7 @@ data:
               },
               "custom": {
                 "align": "left",
-                "cellOptions": {
-                  "type": "auto"
-                },
+                "displayMode": "auto",
                 "inspect": false
               },
               "mappings": [
@@ -6863,13 +6918,6 @@ data:
                   {
                     "id": "custom.align",
                     "value": "center"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "color-background"
-                    }
                   }
                 ]
               },
@@ -6882,13 +6930,6 @@ data:
                   {
                     "id": "custom.align",
                     "value": "center"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "color-background"
-                    }
                   }
                 ]
               },
@@ -6901,13 +6942,6 @@ data:
                   {
                     "id": "custom.align",
                     "value": "center"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "color-background"
-                    }
                   }
                 ]
               },
@@ -6917,13 +6951,6 @@ data:
                   "options": "Tainan"
                 },
                 "properties": [
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "color-background"
-                    }
-                  },
                   {
                     "id": "custom.align",
                     "value": "center"
@@ -6955,7 +6982,7 @@ data:
             "showHeader": true,
             "sortBy": []
           },
-          "pluginVersion": "11.5.2",
+          "pluginVersion": "9.3.8",
           "targets": [
             {
               "datasource": {
@@ -6977,7 +7004,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "editorMode": "builder",
+              "editorMode": "code",
               "expr": "earthquake_alerts_damage{location=\"Taipei\"}",
               "format": "table",
               "hide": false,
@@ -7031,34 +7058,111 @@ data:
               "id": "joinByField",
               "options": {
                 "byField": "Time",
-                "mode": "inner"
-              }
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {},
-                "renameByName": {
-                  "Value #D": "",
-                  "earthquake_id": "ID",
-                  "earthquake_id 1": "ID",
-                  "earthquake_id 2": "ID",
-                  "earthquake_id 3": "ID",
-                  "id": "ID",
-                  "id 5": "ID",
-                  "instance 2": ""
-                }
+                "mode": "outer"
               }
             },
             {
               "id": "joinByField",
               "options": {
-                "byField": "ID",
-                "mode": "inner"
+                "byField": "id 1",
+                "mode": "outer"
               }
             },
             {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Value #B": true,
+                  "Value #D": false,
+                  "__name__": true,
+                  "__name__ 1": true,
+                  "__name__ 2": true,
+                  "__name__ 3": true,
+                  "__name__ 4": true,
+                  "container 1": true,
+                  "container 2": true,
+                  "container 3": true,
+                  "container 4": true,
+                  "container 5": true,
+                  "earthquake_id": true,
+                  "earthquake_id 1": true,
+                  "earthquake_id 2": true,
+                  "earthquake_id 3": true,
+                  "earthquake_id 4": true,
+                  "endpoint 1": true,
+                  "endpoint 2": true,
+                  "endpoint 3": true,
+                  "endpoint 4": true,
+                  "endpoint 5": true,
+                  "id 1": false,
+                  "id 2": true,
+                  "id 3": true,
+                  "id 4": true,
+                  "id 5": true,
+                  "instance 1": true,
+                  "instance 2": true,
+                  "instance 3": true,
+                  "instance 4": true,
+                  "instance 5": true,
+                  "job 1": true,
+                  "job 2": true,
+                  "job 3": true,
+                  "job 4": true,
+                  "job 5": true,
+                  "location": true,
+                  "location 1": true,
+                  "location 2": true,
+                  "location 3": true,
+                  "location 4": true,
+                  "namespace 1": true,
+                  "namespace 2": true,
+                  "namespace 3": true,
+                  "namespace 4": true,
+                  "namespace 5": true,
+                  "origin_time 1": false,
+                  "origin_time 2": true,
+                  "origin_time 3": true,
+                  "origin_time 4": true,
+                  "pod 1": true,
+                  "pod 2": true,
+                  "pod 3": true,
+                  "pod 4": true,
+                  "pod 5": true,
+                  "service 1": true,
+                  "service 2": true,
+                  "service 3": true,
+                  "service 4": true,
+                  "service 5": true,
+                  "source 1": true,
+                  "source 2": true,
+                  "source 3": true,
+                  "source 4": true,
+                  "source 5": true
+                },
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Value #A": "magnitude",
+                  "Value #B": "Taipei",
+                  "Value #C": "Hsinchu",
+                  "Value #D": "TaiChung",
+                  "Value #E": "Tainan",
+                  "earthquake_id": "ID",
+                  "earthquake_id 1": "ID",
+                  "earthquake_id 2": "ID",
+                  "earthquake_id 3": "ID",
+                  "epicenter": "Epicenter",
+                  "id": "ID",
+                  "id 1": "ID",
+                  "id 5": "ID",
+                  "instance 1": "",
+                  "instance 2": "",
+                  "source 1": "source"
+                }
+              }
+            },
+            {
+              "disabled": true,
               "id": "groupBy",
               "options": {
                 "fields": {
@@ -7134,13 +7238,21 @@ data:
               }
             },
             {
+              "disabled": true,
               "id": "calculateField",
               "options": {
                 "binary": {
-                  "left": "Value #B (first)",
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Value #B (first)"
+                    }
+                  },
                   "operator": "*",
                   "reducer": "sum",
-                  "right": "1000"
+                  "right": {
+                    "fixed": "1000"
+                  }
                 },
                 "mode": "binary",
                 "reduce": {
@@ -7153,6 +7265,7 @@ data:
               }
             },
             {
+              "disabled": true,
               "id": "organize",
               "options": {
                 "excludeByName": {
@@ -7194,9 +7307,9 @@ data:
           "type": "table"
         }
       ],
-      "preload": false,
-      "refresh": "",
-      "schemaVersion": 40,
+      "refresh": "10s",
+      "schemaVersion": 37,
+      "style": "dark",
       "tags": [],
       "templating": {
         "list": []
@@ -7207,8 +7320,8 @@ data:
       },
       "timepicker": {},
       "timezone": "browser",
-      "title": "Earthquake",
-      "uid": "cem0vlevv4f0gd",
-      "version": 39,
+      "title": "Earthquake Copy",
+      "uid": "83ddaf83-6408-4b59-9941-468e596761c5",
+      "version": 1,
       "weekStart": ""
     }
