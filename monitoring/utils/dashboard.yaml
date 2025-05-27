@@ -6384,7 +6384,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 5,
+      "id": 8,
       "links": [],
       "panels": [
         {
@@ -6427,7 +6427,8 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -6551,7 +6552,7 @@ data:
             "showHeader": true,
             "sortBy": []
           },
-          "pluginVersion": "12.0.1",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -6624,65 +6625,37 @@ data:
           "title": "Command",
           "transformations": [
             {
-              "filter": {
-                "id": "byRefId",
-                "options": "/^(?:A)$/"
-              },
-              "id": "joinByField",
-              "options": {
-                "byField": "id",
-                "mode": "outerTabular"
-              }
-            },
-            {
               "id": "joinByField",
               "options": {
                 "byField": "Time",
-                "mode": "outer"
+                "mode": "inner"
               }
             },
             {
               "id": "organize",
               "options": {
-                "excludeByName": {
-                  "__name__": true,
-                  "earthquake_id": true,
-                  "id 2": true,
-                  "instance 1": true,
-                  "instance 2": true,
-                  "job 1": true,
-                  "job 2": true,
-                  "location": true,
-                  "origin_time": false,
-                  "source 1": false,
-                  "source 2": true
-                },
-                "includeByName": {},
+                "excludeByName": {},
                 "indexByName": {},
                 "renameByName": {
-                  "Value #A": "magnitude",
-                  "Value #B": "Taipei",
-                  "Value #C": "Hsinchu",
-                  "Value #D": "Taichung",
-                  "Value #E": "Tainan",
-                  "__name__": "",
+                  "Value #D": "",
                   "earthquake_id": "ID",
                   "earthquake_id 1": "ID",
                   "earthquake_id 2": "ID",
                   "earthquake_id 3": "ID",
-                  "epicenter": "Epicenter",
                   "id": "ID",
-                  "id 1": "ID",
                   "id 5": "ID",
-                  "instance 1": "",
-                  "instance 2": "",
-                  "source 1": "source",
-                  "source 2": ""
+                  "instance 2": ""
                 }
               }
             },
             {
-              "disabled": true,
+              "id": "joinByField",
+              "options": {
+                "byField": "ID",
+                "mode": "inner"
+              }
+            },
+            {
               "id": "groupBy",
               "options": {
                 "fields": {
@@ -6758,20 +6731,13 @@ data:
               }
             },
             {
-              "disabled": true,
               "id": "calculateField",
               "options": {
                 "binary": {
-                  "left": {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "Value #B (first)"
-                    }
-                  },
+                  "left": "Value #B (first)",
                   "operator": "*",
-                  "right": {
-                    "fixed": "1000"
-                  }
+                  "reducer": "sum",
+                  "right": "1000"
                 },
                 "mode": "binary",
                 "reduce": {
@@ -6784,7 +6750,6 @@ data:
               }
             },
             {
-              "disabled": true,
               "id": "organize",
               "options": {
                 "excludeByName": {
@@ -6865,7 +6830,8 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -6989,7 +6955,7 @@ data:
             "showHeader": true,
             "sortBy": []
           },
-          "pluginVersion": "12.0.1",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -7011,7 +6977,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "editorMode": "code",
+              "editorMode": "builder",
               "expr": "earthquake_alerts_damage{location=\"Taipei\"}",
               "format": "table",
               "hide": false,
@@ -7062,61 +7028,37 @@ data:
           "title": "Damage",
           "transformations": [
             {
-              "filter": {
-                "id": "byRefId",
-                "options": "/^(?:A)$/"
-              },
-              "id": "joinByField",
-              "options": {
-                "byField": "id",
-                "mode": "outerTabular"
-              }
-            },
-            {
               "id": "joinByField",
               "options": {
                 "byField": "Time",
-                "mode": "outer"
+                "mode": "inner"
               }
             },
             {
               "id": "organize",
               "options": {
-                "excludeByName": {
-                  "__name__": true,
-                  "earthquake_id": true,
-                  "id 2": true,
-                  "instance 1": true,
-                  "instance 2": true,
-                  "job 1": true,
-                  "job 2": true,
-                  "location": true,
-                  "source 2": true
-                },
-                "includeByName": {},
+                "excludeByName": {},
                 "indexByName": {},
                 "renameByName": {
-                  "Value #A": "magnitude",
-                  "Value #B": "Taipei",
-                  "Value #C": "Hsinchu",
-                  "Value #D": "TaiChung",
-                  "Value #E": "Tainan",
+                  "Value #D": "",
                   "earthquake_id": "ID",
                   "earthquake_id 1": "ID",
                   "earthquake_id 2": "ID",
                   "earthquake_id 3": "ID",
-                  "epicenter": "Epicenter",
                   "id": "ID",
-                  "id 1": "ID",
                   "id 5": "ID",
-                  "instance 1": "",
-                  "instance 2": "",
-                  "source 1": "source"
+                  "instance 2": ""
                 }
               }
             },
             {
-              "disabled": true,
+              "id": "joinByField",
+              "options": {
+                "byField": "ID",
+                "mode": "inner"
+              }
+            },
+            {
               "id": "groupBy",
               "options": {
                 "fields": {
@@ -7192,20 +7134,13 @@ data:
               }
             },
             {
-              "disabled": true,
               "id": "calculateField",
               "options": {
                 "binary": {
-                  "left": {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "Value #B (first)"
-                    }
-                  },
+                  "left": "Value #B (first)",
                   "operator": "*",
-                  "right": {
-                    "fixed": "1000"
-                  }
+                  "reducer": "sum",
+                  "right": "1000"
                 },
                 "mode": "binary",
                 "reduce": {
@@ -7218,7 +7153,6 @@ data:
               }
             },
             {
-              "disabled": true,
               "id": "organize",
               "options": {
                 "excludeByName": {
@@ -7261,8 +7195,8 @@ data:
         }
       ],
       "preload": false,
-      "refresh": "10s",
-      "schemaVersion": 41,
+      "refresh": "",
+      "schemaVersion": 40,
       "tags": [],
       "templating": {
         "list": []
@@ -7273,7 +7207,8 @@ data:
       },
       "timepicker": {},
       "timezone": "browser",
-      "title": "Earthquake Copy",
-      "uid": "83ddaf83-6408-4b59-9941-468e596761c5",
-      "version": 7
+      "title": "Earthquake",
+      "uid": "cem0vlevv4f0gd",
+      "version": 39,
+      "weekStart": ""
     }
